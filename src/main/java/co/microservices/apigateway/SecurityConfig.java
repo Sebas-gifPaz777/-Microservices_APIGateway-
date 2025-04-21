@@ -13,11 +13,13 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) {
         http
-            .authorizeExchange(exchanges -> exchanges
-                .anyExchange().permitAll() // <--- ¡Permite todas las solicitudes temporalmente!
-            )
-            .csrf().disable() // Deshabilita CSRF (simple para prueba, configurar correctamente después)
-            .cors().disable(); // Deshabilita CORS (simple para prueba, configurar correctamente después)
+                .authorizeExchange(exchanges -> exchanges
+                        .anyExchange().permitAll() // Permite todas las solicitudes temporalmente
+                )
+                // --- Configuración de CSRF usando lambda (Spring Security 6.1+) ---
+                .csrf(csrf -> csrf.disable()) // <-- Nueva forma de deshabilitar CSRF
+                // --- Configuración de CORS usando lambda (Spring Security 6.1+) ---
+                .cors(cors -> cors.disable()); // <-- Nueva forma de deshabilitar CORS
 
         return http.build();
     }
