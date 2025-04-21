@@ -4,6 +4,10 @@ spring:
 
   security:
     oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/gimnasio
+
       client:
         registration:
           keycloak:
@@ -15,43 +19,44 @@ spring:
               - openid
               - profile
               - email
+
         provider:
           keycloak:
             issuer-uri: http://localhost:8080/realms/gimnasio
 
-  cloud:
-    gateway:
-      default-filters:
-        - TokenRelay
+cloud:
+  gateway:
+    default-filters:
+      - TokenRelay
 
-      routes:
-        - id: equipos-route
-          uri: lb://equipo
-          predicates:
-            - Path=/equipos/**
-          filters:
-            - StripPrefix=1
+    routes:
+      - id: equipos-route
+        uri: lb://equipo
+        predicates:
+          - Path=/equipos/**
+        filters:
+          - StripPrefix=1
 
-        - id: entrenadores-route
-          uri: lb://entrenadores
-          predicates:
-            - Path=/entrenadores/**
-          filters:
-            - StripPrefix=1
+      - id: entrenadores-route
+        uri: lb://entrenadores
+        predicates:
+          - Path=/entrenadores/**
+        filters:
+          - StripPrefix=1
 
-        - id: miembros-route
-          uri: lb://miembros
-          predicates:
-            - Path=/miembros/**
-          filters:
-            - StripPrefix=1
+      - id: miembros-route
+        uri: lb://miembros
+        predicates:
+          - Path=/miembros/**
+        filters:
+          - StripPrefix=1
 
-        - id: clase-route
-          uri: lb://clase
-          predicates:
-            - Path=/clase/**
-          filters:
-            - StripPrefix=1
+      - id: clase-route
+        uri: lb://clase
+        predicates:
+          - Path=/clase/**
+        filters:
+          - StripPrefix=1
 
 eureka:
   client:
