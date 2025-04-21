@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"co.microservices.apigateway", "co.microservices"})
+@ComponentScan(basePackages = {"co.microservices.apigateway"})
 public class ApigatewayApplication {
 
 	public static void main(String[] args) {

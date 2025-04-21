@@ -2,32 +2,52 @@ spring:
   application:
     name: api-gateway
 
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: api-gateway
+            client-secret: CTml2E9RPOEELRbdb7ZeVPeatQ3DYGAE
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope:
+              - openid
+              - profile
+              - email
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8080/realms/gimnasio
+
   cloud:
     gateway:
+      default-filters:
+        - TokenRelay
+
       routes:
         - id: equipos-route
-          uri: lb://equipo                        # <– cambia aquí
+          uri: lb://equipo
           predicates:
             - Path=/equipos/**
           filters:
             - StripPrefix=1
 
         - id: entrenadores-route
-          uri: lb://entrenadores                  # <– y aquí
+          uri: lb://entrenadores
           predicates:
             - Path=/entrenadores/**
           filters:
             - StripPrefix=1
 
         - id: miembros-route
-          uri: lb://miembros                      # <– y aquí
+          uri: lb://miembros
           predicates:
             - Path=/miembros/**
           filters:
-            - RewritePath=/miembros/(?<remaining>.*), /api/miembro/${remaining}
+            - StripPrefix=1
 
         - id: clase-route
-          uri: lb://clase                         # <– y aquí
+          uri: lb://clase
           predicates:
             - Path=/clase/**
           filters:
