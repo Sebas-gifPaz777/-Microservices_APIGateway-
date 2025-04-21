@@ -1,0 +1,36 @@
+spring:
+  cloud:
+    gateway:
+      routes: # <--- Aquí comienza la lista de definiciones de ruta
+        - # <--- Esta es la primera definición de ruta en la lista (para equipos)
+          id: equipos-route
+          uri: http://localhost:8081/ # Destino
+          predicates:
+            - Path=/equipos/** # Condición
+          filters:
+            - StripPrefix=1 # Filtro
+
+        - # <--- Esta es la segunda definición de ruta en la lista (para entrenadores)
+          id: entrenadores-route
+          uri: http://localhost:8082/ # Destino
+          predicates:
+            - Path=/entrenadores/** # Condición
+          filters:
+            - StripPrefix=1 # Filtro
+
+        - # <--- Esta es la segunda definición de ruta en la lista (para miembros)
+          id: miembros-route
+          uri: http://localhost:8083/ # Destino
+          predicates:
+            - Path=/miembros/** # Condición
+          filters:
+            - RewritePath=/miembros/(?<remaining>.*), /api/miembro/${remaining}
+        
+        - # <--- Esta es la segunda definición de ruta en la lista (para clases)
+          id: clase-route
+          uri: http://localhost:8084/ # Destino
+          predicates:
+            - Path=/clase/** # Condición
+          filters:
+            - StripPrefix=1 # Filtro
+
